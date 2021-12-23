@@ -14,12 +14,11 @@ cipher = bytes.fromhex(
 # For this challenge we need to use the associative property; We know some of what the message/flagg will look like
 # and this means that the following would be true:
 # cipher ^ secret_key = "crypto{...}"   <=> cipher ^ "crypto{...}" = secret_key
-#
-# However, we can only know the first 7 characters for sure. But we can use this to create a partial key:
-partial_key = xor(cipher[:7], "crypto{")
 
-# So now we have our partial key "myXORke" - but with some imaination, and since we could guess the key uses actual words,
-# we can guess that the partial_key should actually be:
+# However, we can only know the first 7 characters for sure, and the absolute last. But - we can use this to create a partial key:
+partial_key = xor(cipher[:7], "crypto{") + xor(cipher[-1], "}")
+
+# The above actually becomes:
 partial_key = "myXORkey"
 
 # If we assume this is the complete key, 8 chars long - then we probably need to repeat it over the full cipher (42 chars).
