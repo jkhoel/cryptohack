@@ -14,13 +14,15 @@ cipher = bytes.fromhex(
 
 print("Here is your flag:")
 # A single bytes means an integer value of between 0-255, assuming it is unsigned
-for i in range(0, 256):
+for i in range(256):
     # Lets wrap it in a try-catch as some of the XOR results might not be decodable (non-ascii characters)
     try:
-        flag = xor(cipher, i).decode('utf8')
+        # Make a candidate to check for flag
+        _candidate = xor(cipher, i).decode('utf8')
 
         # We know that the flag will have a certain format, so we can use that to filter out
-        if search("crypto{", xor(cipher, i).decode('utf8')) is not None:
-            print(flag)
+        if _candidate.startswith('crypto'):
+            print(_candidate)
+
     except:
         pass
